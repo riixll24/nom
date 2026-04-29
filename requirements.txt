@@ -3,3 +3,4 @@ ultralytics
 Pillow
 werkzeug
 openai
+gunicorn
