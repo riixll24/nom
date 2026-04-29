@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}البحث عن فرص{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="dashboard-layout">
+        <div class="dashboard-content">
+            <div class="page-header" style="text-align:right">
+                <h1>ابحث عن فرصة الحصاد التالية</h1>
+                <p>ابحث عن فرص لمساعدة المزارع المحلية. قم بالتصفية حسب نوع المحصول أو الموقع للعثور على ما يناسبك.</p>
+            </div>
+            <form method="GET" class="filter-bar">
+                <input type="text" name="q" class="form-control" placeholder="ابحث بالمحصول أو الموقع .." value="{{ q }}">
+                <select name="crop" class="form-control">
+                    <option value="">🌿 الكل</option>
+                    {% for c in crops %}
+                    <option value="{{ c.crop }}" {% if crop_filter == c.crop %}selected{% endif %}>{{ c.crop }}</option>
+                    {% endfor %}
+                </select>
+                <input type="date" name="date" class="form-control" value="{{ date_filter }}" style="max-width:200px">
+                <button type="submit" class="btn btn-outline btn-sm">بحث</button>
+            </form>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>المحصول</th>
+                            <th>الموقع</th>
+                            <th>التاريخ</th>
+                            <th>المزارع</th>
+                            <th>إجراء</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for req in requests %}
+                        <tr>
+                            <td><span style="color:var(--green-mid);font-weight:600">🌱 {{ req.crop }}</span></td>
+                            <td>{{ req.location }}</td>
+                            <td>{{ req.harvest_date }}</td>
+                            <td>{{ req.farmer_name }}</td>
+                            <td><a href="{{ url_for('volunteer_opportunity_detail', rid=req.id) }}" class="btn btn-outline btn-sm">← عرض التفاصيل</a></td>
+                        </tr>
+                        {% endfor %}
+                        {% if not requests %}
+                        <tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text-light)">لا توجد فرص متاحة حالياً</td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="sidebar">
+            <ul class="sidebar-nav">
+                <li><a href="{{ url_for('volunteer_dashboard') }}"><span class="icon">🏠</span> نظرة عامة</a></li>
+                <li><a href="{{ url_for('volunteer_search') }}" class="active"><span class="icon">📋</span> البحث عن فرص</a></li>
+                <li><a href="{{ url_for('volunteer_my_requests') }}"><span class="icon">✈️</span> طلباتي</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

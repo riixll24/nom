@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}طلباتي{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="dashboard-layout">
+        <div class="dashboard-content">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+                <div>
+                    <h1 style="font-size:1.8rem;font-weight:800;color:var(--green-dark)">طلبات الحصاد الخاصة بي</h1>
+                    <p style="color:var(--text-light)">قم بإدارة طلباتك وعرض المتقدمين.</p>
+                </div>
+                <a href="{{ url_for('farmer_new_request') }}" class="btn btn-primary">➕ إنشاء طلب جديد</a>
+            </div>
+            {% for req in requests %}
+            <div class="request-card">
+                <div class="request-header">
+                    <div>
+                        <div class="request-title">حصاد {{ req.crop }}</div>
+                        <div class="request-meta">
+                            <span>📍 {{ req.location }}</span>
+                            <span>📅 {{ req.harvest_date }}</span>
+                        </div>
+                        <div style="font-size:0.9rem;color:var(--text-mid)">👥 {{ req.applicant_count }} متقدمين</div>
+                    </div>
+                    <span class="status-badge {% if req.status == 'مفتوح' %}status-open{% elif req.status == 'مكتمل' %}status-complete{% endif %}">{{ req.status }}</span>
+                </div>
+                <div class="request-actions">
+                    <a href="{{ url_for('farmer_request_detail', rid=req.id) }}" class="btn btn-outline btn-sm">👁 عرض التفاصيل</a>
+                    {% if req.status == 'مفتوح' %}
+                    <a href="{{ url_for('farmer_edit_request', rid=req.id) }}" class="btn btn-outline btn-sm">✏️ تعديل</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+            {% if not requests %}
+            <div style="text-align:center;padding:60px 0;color:var(--text-light)">
+                <p>لا توجد طلبات حتى الآن.</p>
+                <a href="{{ url_for('farmer_new_request') }}" class="btn btn-primary" style="margin-top:16px">إنشاء أول طلب</a>
+            </div>
+            {% endif %}
+        </div>
+        <div class="sidebar">
+            <ul class="sidebar-nav">
+                <li><a href="{{ url_for('farmer_dashboard') }}"><span class="icon">🏠</span> نظرة عامة</a></li>
+                <li><a href="{{ url_for('farmer_requests') }}" class="active"><span class="icon">👥</span> طلباتي</a></li>
+                <li><a href="{{ url_for('farmer_new_request') }}"><span class="icon">➕</span> طلب جديد</a></li>
+                <li><a href="{{ url_for('farmer_predict') }}"><span class="icon">🤖</span> تقدير الحصاد</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

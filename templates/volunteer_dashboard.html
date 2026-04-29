@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}لوحة تحكم المتطوع{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="dashboard-layout">
+        <div class="dashboard-content">
+            <div class="dashboard-welcome">
+                <h1>مرحبا بعودتك، {{ current_user.name }} !</h1>
+                <p>ماذا تود أن تفعل اليوم؟</p>
+            </div>
+            <div class="cards-grid">
+                <a href="{{ url_for('volunteer_my_requests') }}" class="card" style="text-decoration:none">
+                    <div class="card-icon">📋</div>
+                    <h3>عرض طلباتي</h3>
+                    <p>تتبع حالة جميع طلبات التطوع الخاصة بك.</p>
+                    <span class="card-link">← اذهب إلى الصفحة</span>
+                </a>
+                <a href="{{ url_for('volunteer_search') }}" class="card" style="text-decoration:none">
+                    <div class="card-icon">🔍</div>
+                    <h3>البحث عن فرص الحصاد</h3>
+                    <p>ابحث عن التطابق المثالي لمهاراتك وتوافرك.</p>
+                    <span class="card-link">← اذهب إلى الصفحة</span>
+                </a>
+            </div>
+        </div>
+        <div class="sidebar">
+            <ul class="sidebar-nav">
+                <li><a href="{{ url_for('volunteer_dashboard') }}" class="active"><span class="icon">🏠</span> نظرة عامة</a></li>
+                <li><a href="{{ url_for('volunteer_search') }}"><span class="icon">📋</span> البحث عن فرص</a></li>
+                <li><a href="{{ url_for('volunteer_my_requests') }}"><span class="icon">✈️</span> طلباتي</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

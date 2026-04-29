@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}لوحة التحكم{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="dashboard-layout">
+        <div class="dashboard-content">
+            <div class="dashboard-welcome">
+                <h1>مرحبا بعودتك، {{ current_user.name }}!</h1>
+                <p>ماذا تود أن تفعل اليوم؟</p>
+            </div>
+            <div class="cards-grid">
+                <a href="{{ url_for('farmer_requests') }}" class="card" style="text-decoration:none">
+                    <div class="card-icon">👥</div>
+                    <h3>عرض طلبات الحصاد الخاصة بي</h3>
+                    <p>شاهد من تقدم بطلب وقم بإدارة طلباتك النشطة.</p>
+                    <span class="card-link">← اذهب إلى الصفحة</span>
+                </a>
+                <a href="{{ url_for('farmer_new_request') }}" class="card" style="text-decoration:none">
+                    <div class="card-icon">📋</div>
+                    <h3>إنشاء طلب حصاد جديد</h3>
+                    <p>ابحث عن متطوعين متحمسين لحصادك القادم.</p>
+                    <span class="card-link">← اذهب إلى الصفحة</span>
+                </a>
+                <a href="{{ url_for('farmer_predict') }}" class="card" style="text-decoration:none">
+                    <div class="card-icon">🤖</div>
+                    <h3>تقدير الحصاد بالذكاء الاصطناعي</h3>
+                    <p>ارفع صورة لمحصولك واحصل على تقدير عدد الثمار والمتطوعين المطلوبين.</p>
+                    <span class="card-link">← اذهب إلى الصفحة</span>
+                </a>
+            </div>
+        </div>
+        <div class="sidebar">
+            <ul class="sidebar-nav">
+                <li><a href="{{ url_for('farmer_dashboard') }}" class="active"><span class="icon">🏠</span> نظرة عامة</a></li>
+                <li><a href="{{ url_for('farmer_requests') }}"><span class="icon">👥</span> طلباتي</a></li>
+                <li><a href="{{ url_for('farmer_new_request') }}"><span class="icon">➕</span> طلب جديد</a></li>
+                <li><a href="{{ url_for('farmer_predict') }}"><span class="icon">🤖</span> تقدير الحصاد</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}الرئيسية - مزارع{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <h1>قدّم يد العون، واحصد الثواب</h1>
+        <p>يربط المتطوعين الشغوفين بالمزارعين المحليين خلال موسم الحصاد المزدحم.</p>
+        <p>انضم إلى مجتمع مكرس لدعم الزراعة المحلية.</p>
+        <a href="{{ url_for('farmer_dashboard') }}" class="btn btn-white btn-lg" style="margin-top:20px">ابحث عن متطوعين</a>
+    </div>
+    <div class="hero-bg">
+        <svg viewBox="0 0 1440 800" preserveAspectRatio="none" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <rect width="1440" height="800" fill="#FAF6F0"/>
+            <circle cx="1250" cy="160" r="55" fill="#F5E6C8" opacity="0.8"/>
+            <circle cx="1250" cy="160" r="38" fill="#FFF8E7"/>
+            <path d="M0 320 Q200 180 400 270 Q600 150 800 250 Q1000 170 1200 220 Q1350 190 1440 230 L1440 800 L0 800Z" fill="#8BB06A" opacity="0.6"/>
+            <path d="M0 360 Q300 220 500 300 Q700 220 900 280 Q1100 230 1300 260 L1440 270 L1440 800 L0 800Z" fill="#6B9B4E" opacity="0.7"/>
+            <path d="M0 400 Q200 320 450 360 Q700 310 900 350 Q1100 320 1440 340 L1440 800 L0 800Z" fill="#4A8B30"/>
+            <g opacity="0.3">
+                <path d="M0 430 Q400 400 800 420 Q1200 400 1440 430 L1440 445 Q1200 415 800 435 Q400 415 0 445Z" fill="#3D7A25"/>
+                <path d="M0 460 Q400 430 800 450 Q1200 430 1440 460 L1440 475 Q1200 445 800 465 Q400 445 0 475Z" fill="#3D7A25"/>
+                <path d="M0 490 Q400 460 800 480 Q1200 460 1440 490 L1440 505 Q1200 475 800 495 Q400 475 0 505Z" fill="#3D7A25"/>
+                <path d="M0 520 Q400 490 800 510 Q1200 490 1440 520 L1440 535 Q1200 505 800 525 Q400 505 0 535Z" fill="#3D7A25"/>
+                <path d="M0 550 Q400 520 800 540 Q1200 520 1440 550 L1440 565 Q1200 535 800 555 Q400 535 0 565Z" fill="#3D7A25"/>
+                <path d="M0 580 Q400 550 800 570 Q1200 550 1440 580 L1440 595 Q1200 565 800 585 Q400 565 0 595Z" fill="#3D7A25"/>
+                <path d="M0 610 Q400 580 800 600 Q1200 580 1440 610 L1440 625 Q1200 595 800 615 Q400 595 0 625Z" fill="#3D7A25"/>
+                <path d="M0 640 Q400 610 800 630 Q1200 610 1440 640 L1440 655 Q1200 625 800 645 Q400 625 0 655Z" fill="#3D7A25"/>
+                <path d="M0 670 Q400 640 800 660 Q1200 640 1440 670 L1440 685 Q1200 655 800 675 Q400 655 0 685Z" fill="#3D7A25"/>
+                <path d="M0 700 Q400 670 800 690 Q1200 670 1440 700 L1440 715 Q1200 685 800 705 Q400 685 0 715Z" fill="#3D7A25"/>
+                <path d="M0 730 Q400 700 800 720 Q1200 700 1440 730 L1440 745 Q1200 715 800 735 Q400 715 0 745Z" fill="#3D7A25"/>
+                <path d="M0 760 Q400 730 800 750 Q1200 730 1440 760 L1440 775 Q1200 745 800 765 Q400 745 0 775Z" fill="#3D7A25"/>
+            </g>
+            <rect x="1130" y="300" width="14" height="90" rx="3" fill="#5C3A1E"/>
+            <circle cx="1137" cy="275" r="40" fill="#2D6B1A"/>
+            <circle cx="1118" cy="293" r="30" fill="#3D8B2A"/>
+            <circle cx="1155" cy="285" r="33" fill="#358524"/>
+            <rect x="1050" y="335" width="9" height="55" rx="2" fill="#5C3A1E"/>
+            <circle cx="1055" cy="318" r="25" fill="#3D8B2A"/>
+            <circle cx="1040" cy="330" r="18" fill="#4A9B35"/>
+        </svg>
+    </div>
+</section>
+
+<!-- الفرص Section -->
+<div class="page-container">
+    <div style="text-align:center;margin:60px 0 30px">
+        <span class="section-tag">فرص مميزة</span>
+        <h2 style="font-size:2.2rem;font-weight:900;color:var(--green-dark);margin:16px 0">أحدث فرص الحصاد</h2>
+        <p style="color:var(--text-mid);font-size:1.05rem">استكشف أحدث طلبات الحصاد من المزارعين المحليين.</p>
+    </div>
+    {% set db = g.get('db') %}
+    <div class="opp-cards" style="margin-top:32px">
+        {% for req in latest_opportunities %}
+        <div class="opp-card">
+            <div class="opp-card-img" {% if req.image %}style="background:url('{{ url_for('static', filename='uploads/' + req.image) }}') center/cover no-repeat"{% endif %}></div>
+            <div class="opp-card-body">
+                <h3>🌱 {{ req.crop }}</h3>
+                <div class="opp-meta">
+                    <span>📍 {{ req.location }}</span>
+                    <span>📅 {{ req.harvest_date }}</span>
+                    <span>👥 {{ req.volunteers_needed }} متطوعين مطلوبين</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% if not latest_opportunities %}
+        <div style="grid-column:1/-1;text-align:center;padding:40px 0;color:var(--text-light)">
+            <p>لا توجد فرص متاحة حالياً. قم بإنشاء طلب حصاد جديد!</p>
+        </div>
+        {% endif %}
+    </div>
+    <div style="text-align:center;margin-top:24px">
+        <a href="{{ url_for('opportunities') }}" class="btn btn-outline">عرض كل الفرص</a>
+    </div>
+</div>
+
+<!-- كيف نعمل Section -->
+<div class="page-container">
+    <div style="text-align:center;margin:60px 0 30px">
+        <span class="section-tag-outline">كيف نعمل</span>
+        <h2 style="font-size:2.2rem;font-weight:900;color:var(--green-dark);margin:16px 0">طريق بسيط لحصاد وفير</h2>
+        <p style="color:var(--text-mid);font-size:1.05rem">نجعل من السهل على المزارعين والمتطوعين التواصل.</p>
+    </div>
+    <div class="steps-grid" style="margin-top:40px">
+        <div class="step-card">
+            <div class="step-icon">👨‍🌾</div>
+            <h3>1. المزارع ينشر طلبًا</h3>
+            <p>يقوم المزارعون بإدراج احتياجات الحصاد الخاصة بهم، بما في ذلك نوع المحصول والتاريخ وعدد المتطوعين المطلوبين.</p>
+        </div>
+        <div class="step-card">
+            <div class="step-icon">👥</div>
+            <h3>2. المتطوعون يقدمون الطلبات</h3>
+            <p>يستعرض المتطوعون الفرص ويقدمون طلبات للحصاد التي تتناسب مع مهاراتهم وتوافرهم.</p>
+        </div>
+        <div class="step-card">
+            <div class="step-icon">🎁</div>
+            <h3>3. اعمل واحصل على مكافأة</h3>
+            <p>بمجرد الموافقة، ينضم المتطوعون إلى الحصاد ويحصلون على مكافآت غير نقدية مثل حصة من المنتج.</p>
+        </div>
+    </div>
+</div>
+
+<!-- من نحن Section -->
+<div class="page-container">
+    <div style="text-align:center;margin:60px 0 30px">
+        <span class="section-tag-outline">شهادات</span>
+        <h2 style="font-size:2.2rem;font-weight:900;color:var(--green-dark);margin:16px 0">من مجتمعنا</h2>
+        <p style="color:var(--text-mid);font-size:1.05rem">استمع إلى ما يقوله المزارعون والمتطوعون عن تجربتهم مع نمو.</p>
+    </div>
+    <div class="testimonial-grid" style="margin-top:40px;margin-bottom:60px">
+        <div class="testimonial-card">
+            <div class="quote">"قضيت عطلة نهاية الأسبوع في قطف الفراولة وكانت تجربة مدهشة. كان شعوراً رائعاً بالتواصل مع الطبيعة ومساعدة مزارع محلي."</div>
+            <div class="testimonial-author">
+                <div>
+                    <h4>سارة الغامدي</h4>
+                    <span>متطوعة في عطلة نهاية الأسبوع</span>
+                </div>
+                <div class="avatar" style="background:linear-gradient(135deg,#E8D5F5,#F5E6D0);display:flex;align-items:center;justify-content:center;font-size:1.8rem">👩</div>
+            </div>
+        </div>
+        <div class="testimonial-card">
+            <div class="quote">"العثور على مساعدة خلال موسم الحصاد كان دائماً تحديًا. نمو جلب لنا متطوعين متحمسين كان العمل معهم ممتعاً."</div>
+            <div class="testimonial-author">
+                <div>
+                    <h4>المزارع أبو صالح</h4>
+                    <span>صاحب بستان تفاح</span>
+                </div>
+                <div class="avatar" style="background:linear-gradient(135deg,#D5E8D4,#E8DCC8);display:flex;align-items:center;justify-content:center;font-size:1.8rem">👨‍🌾</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

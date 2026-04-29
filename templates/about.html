@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}من نحن{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div style="text-align:center;margin:40px 0">
+        <span class="section-tag-outline">شهادات</span>
+        <h1 style="font-size:2.5rem;font-weight:900;color:var(--green-dark);margin:16px 0">من مجتمعنا</h1>
+        <p style="color:var(--text-mid);font-size:1.05rem">استمع إلى ما يقوله المزارعون والمتطوعون عن تجربتهم مع نمو.</p>
+    </div>
+    <div class="testimonial-grid" style="margin-top:40px">
+        <div class="testimonial-card">
+            <div class="quote">"قضيت عطلة نهاية الأسبوع في قطف الفراولة وكانت تجربة مدهشة. كان شعوراً رائعاً بالتواصل مع الطبيعة ومساعدة مزارع محلي. بالإضافة إلى ذلك، عدت إلى المنزل بأطازج فراولة!"</div>
+            <div class="testimonial-author">
+                <div>
+                    <h4>سارة الغامدي</h4>
+                    <span>متطوعة في عطلة نهاية الأسبوع</span>
+                </div>
+                <div class="avatar" style="background:linear-gradient(135deg,#E8D5F5,#F5E6D0);display:flex;align-items:center;justify-content:center;font-size:1.8rem">👩</div>
+            </div>
+        </div>
+        <div class="testimonial-card">
+            <div class="quote">"العثور على مساعدة خلال موسم الحصاد كان دائماً تحديًا. نمو جلب لنا متطوعين متحمسين كان العمل معهم ممتعاً. إنه يغير قواعد اللعبة لمزرعتنا الصغيرة."</div>
+            <div class="testimonial-author">
+                <div>
+                    <h4>المزارع أبو صالح</h4>
+                    <span>صاحب بستان تفاح</span>
+                </div>
+                <div class="avatar" style="background:linear-gradient(135deg,#D5E8D4,#E8DCC8);display:flex;align-items:center;justify-content:center;font-size:1.8rem">👨‍🌾</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

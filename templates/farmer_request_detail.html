@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}تفاصيل الطلب{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="dashboard-layout">
+        <div class="dashboard-content">
+            <a href="{{ url_for('farmer_requests') }}" class="btn btn-outline btn-sm" style="margin-bottom:20px">→ رجوع إلى الطلبات</a>
+            <div class="request-card" style="margin-bottom:24px">
+                <div class="request-header">
+                    <div>
+                        <div class="request-title">حصاد {{ req.crop }}</div>
+                        <div class="request-meta">
+                            <span>📍 {{ req.location }}</span>
+                            <span>📅 {{ req.harvest_date }}</span>
+                            <span>👥 {{ req.volunteers_needed }} متطوعين مطلوبين</span>
+                        </div>
+                        {% if req.reward %}<p style="font-size:0.9rem;color:var(--text-mid)">🎁 المكافأة: {{ req.reward }}</p>{% endif %}
+                        {% if req.description %}<p style="font-size:0.9rem;color:var(--text-mid);margin-top:8px">{{ req.description }}</p>{% endif %}
+                    </div>
+                    <span class="status-badge {% if req.status == 'مفتوح' %}status-open{% else %}status-complete{% endif %}">{{ req.status }}</span>
+                </div>
+            </div>
+            <h2 style="font-size:1.3rem;font-weight:700;color:var(--green-dark);margin-bottom:16px">المتقدمون ({{ applicants|length }})</h2>
+            {% for app in applicants %}
+            <div class="request-card">
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                    <div>
+                        <h3 style="font-weight:700;color:var(--green-dark)">{{ app.name }}</h3>
+                        <p style="font-size:0.88rem;color:var(--text-mid)">📱 {{ app.phone }}</p>
+                        {% if app.skills %}<p style="font-size:0.88rem;color:var(--text-mid)">💪 {{ app.skills }}</p>{% endif %}
+                    </div>
+                    <div style="display:flex;gap:8px;align-items:center">
+                        <span class="status-badge {% if app.status == 'مقبول' %}status-accepted{% elif app.status == 'مرفوض' %}status-rejected{% else %}status-pending{% endif %}">{{ app.status }}</span>
+                        {% if app.status == 'قيد الانتظار' %}
+                        <a href="{{ url_for('accept_application', aid=app.id) }}" class="btn btn-success btn-sm">قبول</a>
+                        <a href="{{ url_for('reject_application', aid=app.id) }}" class="btn btn-danger btn-sm">رفض</a>
+                        {% elif app.status == 'مقبول' %}
+                        <a href="{{ url_for('chat', other_id=app.volunteer_id, request_id=req.id) }}" class="btn btn-outline btn-sm">💬 مراسلة</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% if not applicants %}
+            <p style="text-align:center;color:var(--text-light);padding:40px 0">لا يوجد متقدمون حتى الآن.</p>
+            {% endif %}
+        </div>
+        <div class="sidebar">
+            <ul class="sidebar-nav">
+                <li><a href="{{ url_for('farmer_dashboard') }}"><span class="icon">🏠</span> نظرة عامة</a></li>
+                <li><a href="{{ url_for('farmer_requests') }}" class="active"><span class="icon">👥</span> طلباتي</a></li>
+                <li><a href="{{ url_for('farmer_new_request') }}"><span class="icon">➕</span> طلب جديد</a></li>
+                <li><a href="{{ url_for('farmer_predict') }}"><span class="icon">🤖</span> تقدير الحصاد</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

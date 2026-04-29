@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}تقدير الحصاد{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="dashboard-layout">
+        <div class="dashboard-content">
+            <div class="page-header" style="text-align:right">
+                <h1>🤖 تقدير الحصاد بالذكاء الاصطناعي</h1>
+                <p>ارفع صورة لمحصولك وسيقوم النظام بتحليلها وتقدير عدد الثمار والمتطوعين المطلوبين.</p>
+            </div>
+            <form method="POST" enctype="multipart/form-data" id="predictForm">
+                <!-- Crop Type Selector -->
+                <div style="margin-bottom:24px">
+                    <label style="display:block;font-weight:700;font-size:1rem;color:var(--green-dark);margin-bottom:12px;text-align:right">اختر نوع المحصول:</label>
+                    <div style="display:flex;gap:16px;justify-content:center">
+                        <label class="crop-option" id="opt-olives" onclick="selectCrop('olives')">
+                            <input type="radio" name="crop_type" value="olives" checked style="display:none">
+                            <div class="crop-option-inner selected">
+                                <span style="font-size:2.5rem">🫒</span>
+                                <span style="font-weight:700;font-size:1.1rem;color:var(--green-dark)">زيتون</span>
+                                <span style="font-size:0.82rem;color:var(--text-light)">Olives</span>
+                            </div>
+                        </label>
+                        <label class="crop-option" id="opt-figs" onclick="selectCrop('figs')">
+                            <input type="radio" name="crop_type" value="figs" style="display:none">
+                            <div class="crop-option-inner">
+                                <span style="font-size:2.5rem">🪴</span>
+                                <span style="font-weight:700;font-size:1.1rem;color:var(--green-dark)">تين</span>
+                                <span style="font-size:0.82rem;color:var(--text-light)">Figs</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Image Upload -->
+                <div class="predict-upload" onclick="document.getElementById('imageInput').click()">
+                    <div class="icon">📷</div>
+                    <h3 style="color:var(--green-dark);margin-bottom:8px">اضغط لرفع صورة المحصول</h3>
+                    <p style="color:var(--text-light);font-size:0.88rem">PNG, JPG, JPEG - حد أقصى 16 ميجابايت</p>
+                    <input type="file" name="image" id="imageInput" accept="image/*" style="display:none" onchange="previewImage(this)" required>
+                    <img id="preview" style="max-height:300px;margin:16px auto;display:none;border-radius:8px">
+                </div>
+                <div style="text-align:center;margin-top:24px">
+                    <button type="submit" class="btn btn-primary btn-lg">🔍 تحليل الصورة</button>
+                </div>
+            </form>
+        </div>
+        <div class="sidebar">
+            <ul class="sidebar-nav">
+                <li><a href="{{ url_for('farmer_dashboard') }}"><span class="icon">🏠</span> نظرة عامة</a></li>
+                <li><a href="{{ url_for('farmer_requests') }}"><span class="icon">👥</span> طلباتي</a></li>
+                <li><a href="{{ url_for('farmer_new_request') }}"><span class="icon">➕</span> طلب جديد</a></li>
+                <li><a href="{{ url_for('farmer_predict') }}" class="active"><span class="icon">🤖</span> تقدير الحصاد</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<style>
+.crop-option { cursor:pointer; }
+.crop-option-inner {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+    padding:20px 40px;
+    border:2px solid var(--border-light);
+    border-radius:var(--radius);
+    background:var(--beige);
+    transition:all .2s;
+    min-width:160px;
+}
+.crop-option-inner:hover { border-color:var(--green-mid); }
+.crop-option-inner.selected {
+    border-color:var(--green-btn);
+    background:var(--green-light);
+    box-shadow:0 0 0 3px rgba(61,107,39,0.15);
+}
+</style>
+{% endblock %}
+{% block scripts %}
+<script>
+function selectCrop(type) {
+    document.querySelectorAll('.crop-option-inner').forEach(el => el.classList.remove('selected'));
+    document.querySelector('#opt-' + type + ' .crop-option-inner').classList.add('selected');
+    document.querySelector('input[value="' + type + '"]').checked = true;
+}
+function previewImage(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.getElementById('preview');
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>
+{% endblock %}

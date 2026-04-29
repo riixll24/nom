@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}تفاصيل الفرصة{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="dashboard-layout">
+        <div class="dashboard-content">
+            <a href="{{ url_for('volunteer_search') }}" class="btn btn-outline btn-sm" style="margin-bottom:20px">→ العودة إلى الفرص</a>
+
+            <!-- Hero Banner -->
+            <div class="detail-hero">
+                <div>
+                    <h1>حصاد {{ req.crop }}</h1>
+                    <span class="sub">{{ req.location }}</span>
+                </div>
+            </div>
+
+            <!-- Detail Grid -->
+            <div class="detail-grid">
+                <!-- About this opportunity -->
+                <div class="detail-info">
+                    <h3 style="display:flex;align-items:center;gap:6px;font-weight:700;color:var(--green-dark);margin-bottom:12px">🌱 حول هذه الفرصة</h3>
+                    <p style="color:var(--text-mid);line-height:1.8">{{ req.description or 'لا يوجد وصف إضافي.' }}</p>
+                </div>
+
+                <!-- Opportunity Details Sidebar -->
+                <div class="detail-sidebar">
+                    <h3>تفاصيل الفرصة</h3>
+                    <div class="detail-meta-item">
+                        <span class="icon">📅</span>
+                        <div>
+                            <strong>التاريخ</strong>
+                            <span>{{ req.harvest_date }}</span>
+                        </div>
+                    </div>
+                    <div class="detail-meta-item">
+                        <span class="icon">👥</span>
+                        <div>
+                            <strong>المتطوعون المطلوبون</strong>
+                            <span style="color:var(--green-mid);font-weight:700">{{ req.volunteers_needed }}</span>
+                        </div>
+                    </div>
+                    {% if req.reward %}
+                    <div class="detail-meta-item">
+                        <span class="icon">🎁</span>
+                        <div>
+                            <strong>المكافأة</strong>
+                            <span>{{ req.reward }}</span>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if already_applied %}
+                        {% if already_applied.status == 'مقبول' %}
+                        <div class="alert-box">
+                            <span class="alert-icon">ℹ️</span>
+                            <div>
+                                <strong>لقد تم قبولك!</strong><br>
+                                يرجى التنسيق معه لمزيد من التفاصيل.<br>
+                                رقم هاتف المزارع هو <strong>{{ req.farmer_phone }}</strong>
+                            </div>
+                        </div>
+                        <a href="{{ url_for('chat', other_id=req.farmer_id, request_id=req.id) }}" class="btn btn-primary" style="width:100%;margin-top:8px">💬 ابدء المراسله</a>
+                        {% elif already_applied.status == 'قيد الانتظار' %}
+                        <div class="pending-box">
+                            <strong>تم إرسال طلبك</strong><br>
+                            <span style="font-size:0.88rem">سيتم إعلامك برد المزارع.</span>
+                        </div>
+                        {% endif %}
+                    {% else %}
+                        <a href="{{ url_for('volunteer_apply', rid=req.id) }}" class="btn btn-outline btn-lg" style="width:100%;margin-top:12px">طلب انضمام</a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Farmer Info -->
+            <h3 style="font-size:1.2rem;font-weight:700;color:var(--green-dark);margin:24px 0 12px;text-align:right">عن المزارع</h3>
+            <div class="farmer-box">
+                <div style="text-align:right">
+                    <h4>{{ req.farmer_name }}</h4>
+                    <div class="stars">
+                        {% if ratings and ratings.avg_score %}
+                            {% for i in range(ratings.avg_score|int) %}★{% endfor %}{% for i in range(5 - ratings.avg_score|int) %}☆{% endfor %}
+                            <span style="color:var(--text-light);font-size:0.82rem">( {{ ratings.count }} تقييم)</span>
+                        {% else %}
+                            <span style="color:var(--text-light);font-size:0.82rem">لا توجد تقييمات بعد</span>
+                        {% endif %}
+                    </div>
+                    <span style="font-size:0.85rem;color:var(--text-mid)">📍 {{ req.farmer_location }}</span>
+                </div>
+                <div class="farmer-avatar"></div>
+            </div>
+
+            <!-- Related Opportunities -->
+            {% if related %}
+            <h3 style="font-size:1.2rem;font-weight:700;color:var(--green-dark);margin:32px 0 16px;text-align:right">فرص ذات صلة</h3>
+            <div class="opp-cards">
+                {% for r in related %}
+                <div class="opp-card">
+                    <div class="opp-card-img"></div>
+                    <div class="opp-card-body">
+                        <h3>🌱 {{ r.crop }}</h3>
+                        <div class="opp-meta">
+                            <span>📍 {{ r.location }}</span>
+                            <span>📅 {{ r.harvest_date }}</span>
+                            <span>👥 {{ r.volunteers_needed }} متطوعين مطلوبين</span>
+                        </div>
+                        <a href="{{ url_for('volunteer_opportunity_detail', rid=r.id) }}" class="btn btn-primary btn-sm">← عرض التفاصيل</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        <div class="sidebar">
+            <ul class="sidebar-nav">
+                <li><a href="{{ url_for('volunteer_dashboard') }}"><span class="icon">🏠</span> نظرة عامة</a></li>
+                <li><a href="{{ url_for('volunteer_search') }}"><span class="icon">📋</span> البحث عن فرص</a></li>
+                <li><a href="{{ url_for('volunteer_my_requests') }}"><span class="icon">✈️</span> طلباتي</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

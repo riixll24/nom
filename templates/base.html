@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}نمو{% endblock %} - منصة الزراعة المجتمعية</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div style="display:flex;align-items:center;gap:32px;">
+            <a href="{{ url_for('home') }}" class="navbar-brand">
+                <span>نمو</span>
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="نمو">
+            </a>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('opportunities') }}">الفرص</a></li>
+                <li><a href="{{ url_for('about') }}">من نحن</a></li>
+                <li><a href="{{ url_for('how_it_works') }}">كيف نعمل</a></li>
+            </ul>
+        </div>
+        <div class="nav-auth">
+            {% if current_user %}
+                <span class="username-display">{{ current_user.name }}</span>
+                <a href="{{ url_for('logout') }}" class="btn btn-primary btn-sm">تسجيل خروج</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="btn-ghost">تسجيل الدخول</a>
+                <a href="{{ url_for('register') }}" class="btn btn-primary">إنشاء حساب</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-messages">
+        {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <!-- Content -->
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-brand">
+            <span>نمو</span>
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="نمو">
+        </div>
+        <span>© 2025 نمو. جميع الحقوق محفوظة.</span>
+        <div class="footer-links">
+            <a href="#">الخصوصية</a>
+            <a href="#">شروط الخدمة</a>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

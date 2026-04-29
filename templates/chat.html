@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}المراسلة{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="dashboard-layout">
+        <div class="dashboard-content">
+            <a href="javascript:history.back()" class="btn btn-outline btn-sm" style="margin-bottom:16px">→ رجوع</a>
+            <div class="chat-container">
+                <div class="chat-header">
+                    <a href="tel:{{ other_user.phone }}" class="btn btn-outline btn-sm">📞 مكالمة صوتيه</a>
+                    <div class="chat-header-info">
+                        <div style="text-align:right">
+                            <h3 style="font-weight:700;color:var(--green-dark)">{{ other_user.name }}</h3>
+                            <span style="font-size:0.82rem;color:var(--text-light)">بخصوص حصاد {{ req.crop }}</span>
+                        </div>
+                        <div class="chat-avatar"></div>
+                    </div>
+                </div>
+                <div class="chat-messages" id="chatMessages">
+                    {% if not messages %}
+                    <div style="text-align:center;color:var(--text-light);padding:40px">ابدأ المحادثة...</div>
+                    {% endif %}
+                    {% for msg in messages %}
+                    <div class="message {% if msg.sender_id == session.user_id %}message-sent{% else %}message-received{% endif %}">
+                        {{ msg.content }}
+                    </div>
+                    {% endfor %}
+                </div>
+                <form method="POST" class="chat-input">
+                    <button type="submit" style="order:2">✈️</button>
+                    <input type="text" name="content" placeholder="اكتب رسالة .." required autofocus style="order:1">
+                </form>
+            </div>
+        </div>
+        <div class="sidebar">
+            <ul class="sidebar-nav">
+                {% if session.role == 'volunteer' %}
+                <li><a href="{{ url_for('volunteer_dashboard') }}"><span class="icon">🏠</span> نظرة عامة</a></li>
+                <li><a href="{{ url_for('volunteer_search') }}"><span class="icon">📋</span> البحث عن فرص</a></li>
+                <li><a href="{{ url_for('volunteer_my_requests') }}" class="active"><span class="icon">✈️</span> طلباتي</a></li>
+                {% else %}
+                <li><a href="{{ url_for('farmer_dashboard') }}"><span class="icon">🏠</span> نظرة عامة</a></li>
+                <li><a href="{{ url_for('farmer_requests') }}" class="active"><span class="icon">👥</span> طلباتي</a></li>
+                <li><a href="{{ url_for('farmer_new_request') }}"><span class="icon">➕</span> طلب جديد</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+    const chat = document.getElementById('chatMessages');
+    if(chat) chat.scrollTop = chat.scrollHeight;
+</script>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}إنشاء حساب{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="form-header" style="margin-top:40px">
+        <div class="form-icon">🌱</div>
+        <h1>انضم إلى نمو</h1>
+        <p>هل لديك حساب بالفعل؟ <a href="{{ url_for('login') }}" style="color:var(--green-mid);font-weight:600">تسجيل الدخول</a></p>
+    </div>
+    <div style="text-align:center;margin:32px 0 16px">
+        <h2 style="font-size:1.3rem;font-weight:700;color:var(--green-dark)">أولاً، أخبرنا من أنت:</h2>
+    </div>
+    <div class="role-cards">
+        <a href="{{ url_for('register_farmer') }}" class="role-card">
+            <div class="role-icon">👨‍🌾</div>
+            <h3>أنا مزارع</h3>
+            <p>أحتاج إلى المساعدة في حصادي وأرغب في التواصل مع متطوعين راغبين.</p>
+        </a>
+        <a href="{{ url_for('register_volunteer') }}" class="role-card">
+            <div class="role-icon">🤚</div>
+            <h3>أنا متطوع</h3>
+            <p>أرغب في تقديم المساعدة في المزارع المحلية ودعم مجتمعي.</p>
+        </a>
+    </div>
+</div>
+{% endblock %}

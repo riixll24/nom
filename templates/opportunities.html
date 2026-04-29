@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}الفرص{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div style="text-align:center;margin:40px 0">
+        <span class="section-tag">فرص مميزة</span>
+        <h1 style="font-size:2.5rem;font-weight:900;color:var(--green-dark);margin:16px 0">انضم إلى حصاد قريب منك</h1>
+        <p style="color:var(--text-mid);font-size:1.05rem">استكشف بعضًا من أحدث الفرص من مزارعينا المحليين. مغامرتك<br>القادمة في الحقل في انتظارك.</p>
+    </div>
+    <div class="opp-cards" style="margin-top:32px">
+        {% for req in requests %}
+        <div class="opp-card">
+            <div class="opp-card-img" {% if req.image %}style="background:url('{{ url_for('static', filename='uploads/' + req.image) }}') center/cover no-repeat"{% endif %}></div>
+            <div class="opp-card-body">
+                <h3>🌱 {{ req.crop }}</h3>
+                <div class="opp-meta">
+                    <span>📍 {{ req.location }}</span>
+                    <span>📅 {{ req.harvest_date }}</span>
+                    <span>👥 {{ req.volunteers_needed }} متطوعين مطلوبين</span>
+                </div>
+                {% if current_user and current_user.role == 'volunteer' %}
+                <a href="{{ url_for('volunteer_opportunity_detail', rid=req.id) }}" class="btn btn-primary btn-sm">← عرض التفاصيل</a>
+                {% elif current_user %}
+                <span class="btn btn-outline btn-sm" style="cursor:default">عرض التفاصيل</span>
+                {% else %}
+                <a href="{{ url_for('login') }}" class="btn btn-primary btn-sm">← عرض التفاصيل</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        {% if not requests %}
+        <div style="grid-column:1/-1;text-align:center;padding:60px 0;color:var(--text-light)">
+            <p>لا توجد فرص متاحة حالياً.</p>
+        </div>
+        {% endif %}
+    </div>
+    {% if not current_user %}
+    <div style="text-align:center;margin-top:32px">
+        <a href="{{ url_for('register') }}" class="btn btn-outline">عرض كل الفرص</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

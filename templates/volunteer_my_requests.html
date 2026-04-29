@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}طلباتي{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="dashboard-layout">
+        <div class="dashboard-content">
+            <div class="page-header" style="text-align:right">
+                <h1>طلباتي</h1>
+                <p>تتبع حالة جميع طلبات التطوع الخاصة بك.</p>
+            </div>
+            {% for app in apps %}
+            <div class="request-card">
+                <div class="request-header">
+                    <div style="display:flex;align-items:center;gap:12px">
+                        <div class="farmer-avatar" style="width:44px;height:44px"></div>
+                        <div>
+                            <div style="display:flex;align-items:center;gap:6px">
+                                <span style="color:var(--green-mid)">🌱</span>
+                                <span class="request-title" style="font-size:1.2rem">حصاد {{ app.crop }}</span>
+                            </div>
+                            <div style="font-size:0.88rem;color:var(--text-mid)">مع {{ app.farmer_name }}</div>
+                        </div>
+                    </div>
+                    <span class="status-badge {% if app.status == 'مقبول' %}status-accepted{% elif app.status == 'قيد الانتظار' %}status-pending{% elif app.status == 'مكتمل' %}status-complete{% else %}status-rejected{% endif %}">{{ app.status }}</span>
+                </div>
+                <div class="request-meta" style="margin-bottom:8px">
+                    <span>📅 {{ app.harvest_date }}</span>
+                    <span>📍 {{ app.location }}</span>
+                </div>
+
+                {% if app.status == 'مقبول' %}
+                <div class="accepted-box">
+                    <strong>تهانينا! لقد تم قبولك.</strong><br>
+                    <span style="font-size:0.88rem">رقم هاتف المزارع هو {{ app.farmer_phone }} . يرجى التنسيق معه لمزيد من التفاصيل.</span>
+                    <div style="margin-top:8px">
+                        <a href="{{ url_for('chat', other_id=app.farmer_id, request_id=app.request_id) }}" class="btn btn-primary btn-sm">💬 إرسال رسالة</a>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div style="margin-top:8px">
+                    <a href="{{ url_for('volunteer_opportunity_detail', rid=app.request_id) }}" class="btn btn-outline btn-sm">← عرض الفرصة</a>
+                </div>
+            </div>
+            {% endfor %}
+            {% if not apps %}
+            <div style="text-align:center;padding:60px 0;color:var(--text-light)">
+                <p>لم تتقدم لأي فرصة بعد.</p>
+                <a href="{{ url_for('volunteer_search') }}" class="btn btn-primary" style="margin-top:16px">ابحث عن فرص</a>
+            </div>
+            {% endif %}
+        </div>
+        <div class="sidebar">
+            <ul class="sidebar-nav">
+                <li><a href="{{ url_for('volunteer_dashboard') }}"><span class="icon">🏠</span> نظرة عامة</a></li>
+                <li><a href="{{ url_for('volunteer_search') }}"><span class="icon">📋</span> البحث عن فرص</a></li>
+                <li><a href="{{ url_for('volunteer_my_requests') }}" class="active"><span class="icon">✈️</span> طلباتي</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

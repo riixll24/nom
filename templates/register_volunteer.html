@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}إنشاء حساب متطوع{% endblock %}
+{% block content %}
+<div class="page-container">
+    <div class="form-container">
+        <div class="form-header">
+            <div class="form-icon">🌱</div>
+            <h1>إنشاء حساب متطوع</h1>
+            <p>هل لديك حساب بالفعل؟ <a href="{{ url_for('login') }}" style="color:var(--green-mid);font-weight:600">تسجيل الدخول</a></p>
+        </div>
+        <form method="POST">
+            <div class="form-group">
+                <label>الاسم الكامل</label>
+                <input type="text" name="name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>رقم الهاتف</label>
+                <input type="tel" name="phone" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>مهاراتك</label>
+                <input type="text" name="skills" class="form-control" placeholder="مثال: قطف التمور، إزالة الأعشاب">
+            </div>
+            <div class="form-group">
+                <label>البريد الإلكتروني</label>
+                <input type="email" name="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>كلمة المرور</label>
+                <input type="password" name="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg" style="width:100%">إنشاء حساب متطوع</button>
+        </form>
+        <div class="form-footer">
+            <a href="{{ url_for('register') }}">اختر نوع حساب مختلف</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
