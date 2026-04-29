@@ -1,6 +1,8 @@
+
 flask
 ultralytics
 Pillow
-werkzeug
+werkzeug==2.2.2
 openai
 gunicorn
+opencv-python-headless
