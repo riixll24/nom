@@ -1,0 +1,5 @@
+flask
+ultralytics
+Pillow
+werkzeug
+openai
